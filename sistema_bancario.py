@@ -8,7 +8,7 @@ class Cliente:
         self.contas = []
 
     def realizar_transacao(self, conta, transacao):
-        transacao.registrar(conta)
+        return transacao.registrar(conta)
 
     def adicionar_conta(self, conta):
         self.contas.append(conta)
@@ -138,6 +138,8 @@ class Saque(Transacao):
         if sucesso_transacao:
             conta.historico.adicionar_transacao(self)
 
+        return sucesso_transacao
+
 class Deposito(Transacao):
     def __init__(self, valor):
         self._valor = valor
@@ -151,6 +153,8 @@ class Deposito(Transacao):
 
         if sucesso_transacao:
             conta.historico.adicionar_transacao(self)
+
+        return sucesso_transacao
 
 def menu():
     menu = """\n
@@ -190,7 +194,12 @@ def depositar(clientes):
     if not conta:
         return
     
-    cliente.realizar_transacao(conta, transacao)
+    sucesso = cliente.realizar_transacao(conta, transacao)
+
+    if sucesso:
+        mensagem("Depósito realizado com sucesso!", "sucesso")
+    else:
+        mensagem("Operação falhou! Valor inválido.", "erro")
 
 def sacar(clientes):
     cliente = obter_cliente(clientes)
@@ -205,7 +214,12 @@ def sacar(clientes):
     if not conta:
         return
     
-    cliente.realizar_transacao(conta, transacao)
+    sucesso = cliente.realizar_transacao(conta, transacao)
+
+    if sucesso:
+        mensagem("Saque realizado com sucesso!", "sucesso")
+    else:
+        mensagem("Operação falhou!, Verifique saldo ou limite.", "erro")
 
 def exibir_extrato(clientes):
     cliente = obter_cliente(clientes)
