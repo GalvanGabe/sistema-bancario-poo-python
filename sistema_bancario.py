@@ -180,17 +180,15 @@ def filtrar_cliente(cpf, clientes):
 def recuperar_conta_cliente(cliente):
     if not cliente.contas:
         print("\n@@@ Cliente não possui conta! @@@")
-        return
+        return None
     
     # FIXME: não permite cliente escolher a conta
     return cliente.contas[0]
 
 def depositar(clientes):
-    cpf = input("Informe o CPF do cliente: ")
-    cliente = filtrar_cliente(cpf, clientes)
+    cliente = obter_cliente(clientes)
 
     if not cliente:
-        print("\n@@@ Cliente não encontrado! @@@")
         return
     
     valor = float(input("Informe o valor do depósito: "))
@@ -203,11 +201,9 @@ def depositar(clientes):
     cliente.realizar_transacao(conta, transacao)
 
 def sacar(clientes):
-    cpf = input("Informe o CPF do cliente: ")
-    cliente = filtrar_cliente(cpf, clientes)
+    cliente = obter_cliente(clientes)
 
     if not cliente:
-        print("\n@@@ Cliente não encontrado! @@@")
         return
     
     valor = float(input("Informe o valor do saque: "))
@@ -220,11 +216,9 @@ def sacar(clientes):
     cliente.realizar_transacao(conta, transacao)
 
 def exibir_extrato(clientes):
-    cpf = input("Informe o CPF do cliente: ")
-    cliente = filtrar_cliente(cpf, clientes)
+    cliente = obter_cliente(clientes)
 
     if not cliente:
-        print("\n@@@ Cliente não encontrado! @@@")
         return
     
     conta = recuperar_conta_cliente(cliente)
@@ -264,11 +258,12 @@ def criar_cliente(clientes):
     print("\n=== Cliente criado com sucesso! ===")
 
 def criar_conta(numero_conta, clientes, contas):
-    cpf = input("Informe o CPF do cliente: ")
-    cliente = filtrar_cliente(cpf, clientes)
+    cliente = obter_cliente(
+        clientes,
+        mensagem_erro="\n@@@ Cliente não encontrado, fluxo de criação de conta encerrado! @@@",
+    )
 
     if not cliente:
-        print("\n@@@ Cliente não encontrado, fluxo de criação de conta encerrado! @@@")
         return
     
     conta = ContaCorrente.nova_conta(cliente=cliente, numero=numero_conta)
@@ -281,6 +276,16 @@ def listar_contas(contas):
     for conta in contas:
         print("=" * 100)
         print(textwrap.dedent(str(conta)))
+
+def obter_cliente(clientes, mensagem_erro="\n@@@ Cliente não encontrado! @@@"):
+    cpf = input("Informe o CPF do cliente: ")
+    cliente = filtrar_cliente(cpf, clientes)
+
+    if not cliente:
+        print(mensagem_erro)
+        return None
+    
+    return cliente
 
 def main():
     clientes = []
