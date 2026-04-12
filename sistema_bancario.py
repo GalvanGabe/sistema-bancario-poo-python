@@ -179,7 +179,7 @@ def filtrar_cliente(cpf, clientes):
 
 def recuperar_conta_cliente(cliente):
     if not cliente.contas:
-        print("\n@@@ Cliente não possui conta! @@@")
+        mensagem("Cliente não possui conta!", "erro")
         return None
     
     # FIXME: não permite cliente escolher a conta
@@ -225,26 +225,24 @@ def exibir_extrato(clientes):
     if not conta:
         return
     
-    print("\n========== EXTRATO =============")
+    mensagem("========== EXTRATO ==========", "info")
     transacoes = conta.historico.transacoes
 
     extrato = ""
     if not transacoes:
-        extrato = "Não foram realizadas movimentações."
+        mensagem("Não foram realizadas movimentações.", "info")
     else:
         for transacao in transacoes:
             extrato += f"\n{transacao['tipo']}:\n\tR${transacao['valor']:.2f}"
 
-    print(extrato)
     print(f"\nSaldo:\n\tR$ {conta.saldo:.2f}")
-    print("=========================")
 
 def criar_cliente(clientes):
     cpf = input("Informe o CPF (somente números): ")
     cliente = filtrar_cliente(cpf, clientes)
 
     if cliente:
-        print("\n@@@ Já existe cliente com esse CPF! @@@")
+        mensagem("Já existe cliente com esse CPF!", "erro")
         return
     
     nome = input("Informe o seu nome completo: ")
@@ -255,12 +253,12 @@ def criar_cliente(clientes):
 
     clientes.append(cliente)
 
-    print("\n=== Cliente criado com sucesso! ===")
+    mensagem("Cliente criado com sucesso!", "sucesso")
 
 def criar_conta(numero_conta, clientes, contas):
     cliente = obter_cliente(
         clientes,
-        mensagem_erro="\n@@@ Cliente não encontrado, fluxo de criação de conta encerrado! @@@",
+        mensagem_erro="Cliente não encontrado, fluxo de criação de conta encerrado!",
     )
 
     if not cliente:
@@ -270,22 +268,31 @@ def criar_conta(numero_conta, clientes, contas):
     contas.append(conta)
     cliente.contas.append(conta)
 
-    print("\n=== Conta criada com sucesso! ===")
+    mensagem("Conta criada com sucesso!", "sucesso")
 
 def listar_contas(contas):
     for conta in contas:
         print("=" * 100)
         print(textwrap.dedent(str(conta)))
 
-def obter_cliente(clientes, mensagem_erro="\n@@@ Cliente não encontrado! @@@"):
+def obter_cliente(clientes, mensagem_erro="Cliente não encontrado!"):
     cpf = input("Informe o CPF do cliente: ")
     cliente = filtrar_cliente(cpf, clientes)
 
     if not cliente:
-        print(mensagem_erro)
+        mensagem(mensagem_erro, "erro")
         return None
     
     return cliente
+
+def mensagem(texto, tipo="info"):
+    tipos = {
+        "sucesso": f"\n=== {texto} ===",
+        "erro": f"\n@@@ {texto} @@@",
+        "info": f"\n{texto}"
+    }
+
+    print(tipos.get(tipo, tipos["info"]))
 
 def main():
     clientes = []
@@ -310,6 +317,6 @@ def main():
         elif opcao == "q":
             break
         else:
-            print("\n@@@ Operação inválida, por favor selecione novamente a operação desejada. @@@")
+            mensagem("Operação inválida, por favor selecione novamente a operação desejada.", "erro")
 
 main()
