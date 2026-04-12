@@ -187,7 +187,7 @@ def depositar(clientes):
     if not cliente:
         return
     
-    valor = float(input("Informe o valor do depósito: "))
+    valor = ler_valor("Informe o valor do depósito: ")
     transacao = Deposito(valor)
 
     conta = recuperar_conta_cliente(cliente)
@@ -207,7 +207,7 @@ def sacar(clientes):
     if not cliente:
         return
     
-    valor = float(input("Informe o valor do saque: "))
+    valor = ler_valor("Informe o valor do saque: ")
     transacao = Saque(valor)
 
     conta = recuperar_conta_cliente(cliente)
@@ -299,6 +299,14 @@ def mensagem(texto, tipo="info"):
     }
 
     print(tipos.get(tipo, tipos["info"]))
+
+def ler_valor(mensagem_input):
+    while True:
+        try:
+            valor = float(input(mensagem_input))
+            return valor
+        except ValueError:
+            mensagem("Entrada inválida! Informe um número válido.", "erro")
 
 def main():
     clientes = []
