@@ -10,13 +10,13 @@ O objetivo do desafio é aplicar conceitos de Programação Orientada a Objetos 
 
 Além da implementação base proposta no desafio, foram realizadas melhorias para tornar o código mais organizado, reutilizável e próximo de um cenário real:
 
-- 🔹 Criação da função `obter_cliente` para evitar repetição na validação de CPF  
-- 🔹 Padronização das mensagens do sistema com a função `mensagem`  
-- 🔹 Separação de responsabilidades (remoção de `print` das classes)  
-- 🔹 Retorno de sucesso/erro nas operações (`depositar` e `sacar`)  
-- 🔹 Criação da função `ler_valor` para validação de entrada numérica  
-- 🔹 Implementação de seleção de conta para clientes com múltiplas contas  
-- 🔹 Melhorias na experiência do usuário no terminal (UX)
+🔹 Criação da função `obter_cliente` para evitar repetição na validação de CPF  
+🔹 Padronização das mensagens do sistema com a função `mensagem`  
+🔹 Separação de responsabilidades (remoção de `print` das classes)  
+🔹 Retorno de sucesso/erro nas operações (`depositar` e `sacar`)  
+🔹 Criação da função `ler_valor` para validação de entrada numérica  
+🔹 Implementação de seleção de conta para clientes com múltiplas contas  
+🔹 Melhorias na experiência do usuário no terminal (UX)
 
 ---
 
@@ -56,10 +56,10 @@ Abaixo um fluxo completo de utilização do sistema:
 - Criação de segunda conta  
 - Novo depósito  
 - Consulta de extrato
-
-![Fluxo 1](imagens/fluxo_do_sistema_1.png)
-![Fluxo 2](imagens/fluxo_do_sistema_2.png)
-![Fluxo 3](imagens/fluxo_do_sistema_3.png)
+  
+<img src="imagens/fluxo_do_sistema_1.png" width="650">
+<img src="imagens/fluxo_do_sistema_2.png" width="650">
+<img src="imagens/fluxo_do_sistema_3.png" width="650">
 
 ## 📚 Código base do professor
 
