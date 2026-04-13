@@ -178,8 +178,24 @@ def recuperar_conta_cliente(cliente):
         mensagem("Cliente não possui conta!", "erro")
         return None
     
-    # FIXME: não permite cliente escolher a conta
-    return cliente.contas[0]
+    if len(cliente.contas) == 1:
+        return cliente.contas[0]
+    
+    mensagem("Contas disponíveis:", "info")
+    for i, conta in enumerate(cliente.contas, start=1):
+        mensagem(f"[{i}] Agência: {conta.agencia} | Conta: {conta.numero}", "info")
+
+    while True:
+        try:
+            opcao = int(input("Selecione a conta desejada: "))
+            if opcao >= 1 and opcao <= len(cliente.contas):
+                return cliente.contas[opcao - 1]
+            else:
+                mensagem("Opção inválida!", "erro")
+            
+        except ValueError:
+            mensagem("Entrada inválida! Informe um número.", "erro")
+
 
 def depositar(clientes):
     cliente = obter_cliente(clientes)
