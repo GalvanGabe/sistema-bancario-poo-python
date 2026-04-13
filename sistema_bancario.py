@@ -170,8 +170,11 @@ def menu():
     return input(textwrap.dedent(menu))
 
 def filtrar_cliente(cpf, clientes):
-    clientes_filtrados = [cliente for cliente in clientes if cliente.cpf == cpf]
-    return clientes_filtrados[0] if clientes_filtrados else None
+    for cliente in clientes:
+        if cliente.cpf == cpf:
+            return cliente
+        
+        return None
 
 def recuperar_conta_cliente(cliente):
     if not cliente.contas:
@@ -183,7 +186,7 @@ def recuperar_conta_cliente(cliente):
     
     mensagem("Contas disponíveis:", "info")
     for i, conta in enumerate(cliente.contas, start=1):
-        mensagem(f"[{i}] Agência: {conta.agencia} | Conta: {conta.numero}", "info")
+        mensagem(f"[{i}] Agência: {conta.agencia} | Conta: {conta.numero} | Saldo: R$ {conta.saldo:.2f}", "info")
 
     while True:
         try:
@@ -235,7 +238,7 @@ def sacar(clientes):
     if sucesso:
         mensagem("Saque realizado com sucesso!", "sucesso")
     else:
-        mensagem("Operação falhou!, Verifique saldo ou limite.", "erro")
+        mensagem("Operação falhou! Verifique saldo ou limite.", "erro")
 
 def exibir_extrato(clientes):
     cliente = obter_cliente(clientes)
@@ -257,7 +260,7 @@ def exibir_extrato(clientes):
         for transacao in transacoes:
             extrato += f"\n{transacao['tipo']}:\n\tR${transacao['valor']:.2f}"
 
-    print(f"\nSaldo:\n\tR$ {conta.saldo:.2f}")
+    print(extrato)
 
 def criar_cliente(clientes):
     cpf = input("Informe o CPF (somente números): ")
